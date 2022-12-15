@@ -1,0 +1,21 @@
+---
+
+- name: copy Dockerfile
+  tags: centos, db,mariadb
+  yum:
+    name: mariadb-server
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: build container image
+  tags: db, mariadb,ubuntu
+  apt:
+    name: mariadb-server
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: launch docker container
+  service:
+    name: mariadb
+    state: restarted
+    enabled: true
